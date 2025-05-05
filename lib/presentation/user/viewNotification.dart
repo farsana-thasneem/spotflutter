@@ -11,23 +11,21 @@ class NotificationsScreen extends StatefulWidget {
 }
 
 class _NotificationsScreenState extends State<NotificationsScreen> {
-  List<Map<String, String>> notifications = [
-    {"title": "Bus Delayed", "message": "Bus 12A is delayed by 10 minutes."},
-    {"title": "New Route", "message": "Route 45B has been added."},
-    {"title": "Schedule Update", "message": "Bus 9C has a new timing."},
+  List<Map<String, dynamic>> notifications = [
+   
   ];
 
   Future<void> fetchNotifications() async {
     try {
       final response = await Dio().get('$baseurl/busalerts/${widget.busid}/');
-      print(response.data);
+      print('asas${response.data}');
       if (response.statusCode == 200 && response.data is List) {
         setState(() {
-          notifications = List<Map<String, String>>.from(
+          notifications = List<Map<String, dynamic>>.from(
             response.data.map(
               (item) => {
-                "title": item["title"] ?? "No Title",
-                "message": item["message"] ?? "No Message",
+                "title": item["reason"] ?? "No data",
+                // "message": item["message"] ?? "No Message",
               },
             ),
           );
@@ -92,7 +90,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                           notifications[index]["title"]!,
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        subtitle: Text(notifications[index]["message"]!),
+                        // subtitle: Text(notifications[index]["message"]!),
                       ),
                     ),
                   );
